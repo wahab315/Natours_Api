@@ -17,9 +17,6 @@ jspm_packages/
 # Optional eslint cache
 .eslintcache
 
-# dotenv environment variables file
-.env
-
 # Ignore build output
 dist/
 build/
