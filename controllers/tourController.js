@@ -1,17 +1,23 @@
-const fs = require('fs');
 const Tour = require('../models/tourModels');
+const APIFeatures = require('../utils/apiFeatures');
 
-exports.checkID = (req, res, next, val) => {
-  // const tour = tours.find((el) => el.id === req.params.id * 1);
-  // if (!tour) {
-  //   return res.status(404).json({ status: "Error", message: "Invalid ID" });
-  // }
-  // next();
+exports.aliasTopTours = (req, res, next) => {
+  req.query.limit = '5';
+  req.query.sort = '-ratingsAverage,price';
+  req.query.fields = 'name,price,ratingsAverage,summary,difficulty';
+  next();
 };
 
 exports.getAllTours = async (req, res) => {
   try {
-    const tours = await Tour.find();
+    const features = new APIFeatures(Tour.find(), req.query)
+      .filter()
+      .sort()
+      .limitFields()
+      .paginate();
+
+    const tours = await features.query;
+
     res.status(200).json({
       status: 'success',
       results: tours.length,
@@ -20,7 +26,7 @@ exports.getAllTours = async (req, res) => {
   } catch (err) {
     res.status(404).json({
       status: 'fail',
-      message: 'Data not found!',
+      message: err,
     });
   }
 };
