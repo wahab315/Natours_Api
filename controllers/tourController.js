@@ -16,9 +16,7 @@ exports.getAllTours = catchAsync(async (req, res, next) => {
     .sort()
     .limitFields()
     .paginate();
-
   const tours = await features.query;
-
   res.status(200).json({
     status: 'success',
     results: tours.length,
@@ -37,18 +35,10 @@ exports.createTour = catchAsync(async (req, res, next) => {
 });
 
 exports.getSingleTour = catchAsync(async (req, res, next) => {
-  console.log(
-    '🚀 ~ exports.getSingleTour=catchAsync ~ req.params.id:',
-    req.params.id
-  );
   const tour = await Tour.findById(req.params.id);
-
-  console.log('YTYTTTHHHHH', tour);
-
   if (!tour) {
     throw new AppError('No tour found with that ID.', 404);
   }
-
   res.status(200).json({ status: 'success', data: tour });
 });
 
@@ -57,11 +47,9 @@ exports.updateSingleTour = catchAsync(async (req, res, next) => {
     new: true,
     runValidators: true,
   });
-
   if (!tour) {
     throw new AppError('No tour found with that ID.', 404);
   }
-
   res.status(200).json({
     status: 'success',
     data: {
@@ -72,11 +60,9 @@ exports.updateSingleTour = catchAsync(async (req, res, next) => {
 
 exports.deleteSingleTour = catchAsync(async (req, res, next) => {
   const tour = await Tour.findByIdAndDelete(req.params.id);
-
   if (!tour) {
     throw new AppError('No tour found with that ID.', 404);
   }
-
   res.status(204).json({
     status: 'success',
     data: null,
@@ -113,7 +99,6 @@ exports.getTourStats = catchAsync(async (req, res, next) => {
 
 exports.getMonthlyPlain = catchAsync(async (req, res) => {
   const year = req.params.year;
-
   const plain = await Tour.aggregate([
     {
       $unwind: '$startDates',
