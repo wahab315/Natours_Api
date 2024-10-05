@@ -11,8 +11,6 @@ if (process.env.NODE_ENV === 'developement') {
   app.use(morgan('dev'));
 }
 
-console.log('ENV', process.env.NODE_ENV);
-
 app.use(express.json());
 
 app.use((req, res, next) => {

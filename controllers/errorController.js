@@ -53,6 +53,7 @@ module.exports = (err, req, res, next) => {
     if (err.code === 11000) error = handleDuplicateFieldsDB(error);
     if (error._message === 'Validation failed')
       error = handleValidationErrorDB(error);
+    if (error.name === 'JsonWebTokenError') error = handleJwtError(error);
 
     sendErrorProd(error, res);
   }
