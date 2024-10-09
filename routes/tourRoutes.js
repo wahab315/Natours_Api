@@ -20,7 +20,11 @@ router
 router
   .route('/:id')
   .get(tourController.getSingleTour)
-  .delete(tourController.deleteSingleTour)
+  .delete(
+    authController.protected,
+    authController.ristrictTo('admin', 'lead-guide'),
+    tourController.deleteSingleTour
+  )
   .patch(tourController.updateSingleTour);
 
 module.exports = router;
